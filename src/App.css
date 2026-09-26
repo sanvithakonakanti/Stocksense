@@ -1466,3 +1466,66 @@ th {
     grid-template-columns: 1fr;
   }
 }
+/* =========================================================
+   PROFILE PAGE
+========================================================= */
+
+.profile-clickable {
+  cursor: pointer;
+}
+
+.profile-clickable:hover {
+  opacity: 0.85;
+}
+
+.profile-page {
+  width: 100%;
+}
+
+.profile-card {
+  max-width: 700px;
+  background: #ffffff;
+  border: 1px solid #e5e8ef;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.large-avatar {
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eef1ff;
+  color: #4054d6;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.profile-card-header h3 {
+  margin: 0 0 5px;
+  color: #202638;
+  font-size: 20px;
+}
+
+.profile-card-header p {
+  margin: 0;
+  color: #858c9c;
+  font-size: 13px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}

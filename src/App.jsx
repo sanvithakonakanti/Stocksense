@@ -262,21 +262,28 @@ function App() {
             </p>
           </div>
 
-          <div className="profile">
-            <div className="avatar">
-              SK
-            </div>
+          <div
+  className="profile profile-clickable"
+  onClick={() =>
+    setActivePage("Profile")
+  }
+>
+  <div className="avatar">
+    {(currentUser?.name || "SK")
+      .slice(0, 2)
+      .toUpperCase()}
+  </div>
 
-            <div>
-              <strong>
-                Sanvitha K
-              </strong>
+  <div>
+    <strong>
+      {currentUser?.name || "Sanvitha K"}
+    </strong>
 
-              <small>
-                Inventory Manager
-              </small>
-            </div>
-          </div>
+    <small>
+      Inventory Manager
+    </small>
+  </div>
+</div>
         </header>
 
         {/* CONTENT */}
@@ -342,6 +349,12 @@ function App() {
           {activePage === "Settings" && (
             <WarehouseSettings />
           )}
+          {activePage === "Profile" && (
+  <ProfilePage
+    currentUser={currentUser}
+    setCurrentUser={setCurrentUser}
+  />
+)}
 
           {activePage !== "Dashboard" &&
             activePage !== "Products" &&
@@ -795,6 +808,7 @@ function ProductsPage({
     stock: "",
     reorderLevel: "",
     location: "Main Store",
+    status: "Draft",
   });
 
   const categories = [
@@ -1624,7 +1638,7 @@ const updatedStock =
         "N/A",
       date:
         new Date().toLocaleString(),
-      status: "Validated",
+      status: "Draft",
       location: form.location,
     };
 
@@ -2042,7 +2056,140 @@ function SearchFilter({
 /* =========================================================
    EXPORT
 ========================================================= */
+function ProfilePage({
+  currentUser,
+  setCurrentUser,
+}) {
+  const [name, setName] = useState(
+    currentUser?.name || "Sanvitha K"
+  );
 
+  const [email, setEmail] = useState(
+    currentUser?.email || ""
+  );
+
+  function handleSave(event) {
+    event.preventDefault();
+
+    if (!name.trim() || !email.trim()) {
+      alert("Please complete all fields.");
+      return;
+    }
+
+    const updatedUser = {
+      ...currentUser,
+      name: name.trim(),
+      email: email.trim(),
+    };
+
+    setCurrentUser(updatedUser);
+
+    localStorage.setItem(
+      "stocksense_user",
+      JSON.stringify(updatedUser)
+    );
+
+    alert("Profile updated successfully.");
+  }
+
+  return (
+    <div className="profile-page">
+
+      <div className="page-header">
+        <div>
+          <h2>My Profile</h2>
+
+          <p>
+            Manage your StockSense account information.
+          </p>
+        </div>
+      </div>
+
+      <div className="profile-card">
+
+        <div className="profile-card-header">
+
+          <div className="large-avatar">
+            {(name || "SK")
+              .slice(0, 2)
+              .toUpperCase()}
+          </div>
+
+          <div>
+            <h3>
+              {name || "Sanvitha K"}
+            </h3>
+
+            <p>
+              Inventory Manager
+            </p>
+          </div>
+
+        </div>
+
+        <form
+          className="profile-form"
+          onSubmit={handleSave}
+        >
+
+          <div className="form-group">
+            <label>
+              Full Name
+            </label>
+
+            <input
+              type="text"
+              value={name}
+              onChange={(event) =>
+                setName(event.target.value)
+              }
+            />
+          </div>
+
+          <div className="form-group">
+            <label>
+              Email Address
+            </label>
+
+            <input
+              type="email"
+              value={email}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
+            />
+          </div>
+
+          <div className="form-group">
+            <label>
+              Role
+            </label>
+
+            <input
+              type="text"
+              value="Inventory Manager"
+              disabled
+            />
+          </div>
+
+          <div className="form-actions">
+
+            <button
+              type="submit"
+              className="primary-button"
+            >
+              Save Changes
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  );
+}
 export default App;
 
 
