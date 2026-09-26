@@ -17,7 +17,7 @@ import {
   AlertTriangle,
   Boxes,
 } from "lucide-react";
-
+import WarehouseSettings from "./components/WarehouseSettings";
 import "./App.css";
 import StockLedger from "./components/StockLedger";
 import Adjustments from "./components/Adjustments";
@@ -290,6 +290,9 @@ function App() {
     operations={operations}
     setOperations={setOperations}
   />
+)}
+{activePage === "Settings" && (
+  <WarehouseSettings />
 )}
 
           {activePage !== "Dashboard" &&

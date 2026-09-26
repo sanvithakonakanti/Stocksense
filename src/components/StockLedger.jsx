@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
+  ArrowLeftRight,
   ClipboardEdit,
   BookOpen,
   Search,
@@ -48,11 +49,15 @@ function StockLedger({ operations }) {
   const adjustmentCount = operations.filter(
     (operation) => operation.type === "adjustment"
   ).length;
+  const transferCount = operations.filter(
+  (operation) => operation.type === "transfer"
+).length;
 
   function getMovementName(type) {
     if (type === "receipt") return "Receipt";
     if (type === "delivery") return "Delivery";
     if (type === "adjustment") return "Adjustment";
+    if (type === "transfer") return "Transfer";
 
     return type;
   }
@@ -170,6 +175,9 @@ function StockLedger({ operations }) {
             <option value="adjustment">
               Adjustments
             </option>
+            <option value="transfer">
+                Transfers
+            </option>
           </select>
         </div>
 
@@ -209,6 +217,9 @@ function StockLedger({ operations }) {
                   const isAdjustment =
                     operation.type ===
                     "adjustment";
+                    const isTransfer = 
+                    operation.type === 
+                    "transfer";
 
                   let quantityText = "";
 
@@ -227,6 +238,7 @@ function StockLedger({ operations }) {
                         ? `+${difference}`
                         : `${difference}`;
                   }
+                  else if (isTransfer) quantityText = `${operation.quantity}`;
 
                   return (
                     <tr key={operation.id}>
@@ -245,6 +257,8 @@ function StockLedger({ operations }) {
                               ? "ledger-receipt"
                               : isDelivery
                               ? "ledger-delivery"
+                              : isTransfer
+                              ? "ledger-transfer"
                               : "ledger-adjustment"
                           }`}
                         >
@@ -265,6 +279,10 @@ function StockLedger({ operations }) {
                               size={14}
                             />
                           )}
+                          {isTransfer && (
+                         <ArrowLeftRight 
+                         size={14} />
+                      )}
 
                           {getMovementName(
                             operation.type
