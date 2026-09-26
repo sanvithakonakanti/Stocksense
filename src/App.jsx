@@ -1,122 +1,235 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from "react";
+import {
+  LayoutDashboard,
+  Package,
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  ArrowLeftRight,
+  ClipboardEdit,
+  History,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [activePage, setActivePage] = useState("Dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const menuItems = [
+    { name: "Dashboard", icon: LayoutDashboard },
+    { name: "Products", icon: Package },
+    { name: "Receipts", icon: ArrowDownToLine },
+    { name: "Deliveries", icon: ArrowUpFromLine },
+    { name: "Transfers", icon: ArrowLeftRight },
+    { name: "Adjustments", icon: ClipboardEdit },
+    { name: "Stock Ledger", icon: History },
+    { name: "Settings", icon: Settings },
+  ];
+
+  return (
+    <div className="app">
+      <aside className={`sidebar ${sidebarOpen ? "open" : "closed"}`}>
+        <div className="logo">
+          <div className="logo-box">S</div>
+          {sidebarOpen && <span>StockSense</span>}
+        </div>
+
+        <nav>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <button
+                key={item.name}
+                className={`nav-item ${
+                  activePage === item.name ? "active" : ""
+                }`}
+                onClick={() => setActivePage(item.name)}
+              >
+                <Icon size={20} />
+                {sidebarOpen && <span>{item.name}</span>}
+              </button>
+            );
+          })}
+        </nav>
+
+        <button className="logout">
+          <LogOut size={20} />
+          {sidebarOpen && <span>Logout</span>}
+        </button>
+      </aside>
+
+      <main className="main">
+        <header className="topbar">
+          <button
+            className="menu-button"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+
+          <div>
+            <h1>{activePage}</h1>
+            <p>Inventory Management System</p>
+          </div>
+
+          <div className="profile">
+            <div className="avatar">SK</div>
+            <div>
+              <strong>Sanvitha K</strong>
+              <small>Inventory Manager</small>
+            </div>
+          </div>
+        </header>
+
+        <section className="content">
+          {activePage === "Dashboard" ? (
+            <Dashboard />
+          ) : (
+            <div className="placeholder">
+              <Package size={48} />
+              <h2>{activePage}</h2>
+              <p>This module will be implemented next.</p>
+            </div>
+          )}
+        </section>
+      </main>
+    </div>
+  );
+}
+
+function Dashboard() {
+  const stats = [
+    {
+      title: "Total Products",
+      value: "1,248",
+      change: "+12 this week",
+    },
+    {
+      title: "Low Stock",
+      value: "18",
+      change: "Needs attention",
+    },
+    {
+      title: "Pending Receipts",
+      value: "12",
+      change: "Incoming",
+    },
+    {
+      title: "Pending Deliveries",
+      value: "8",
+      change: "Outgoing",
+    },
+  ];
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
+      <div className="welcome">
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
+          <h2>Good morning, Sanvitha 👋</h2>
+          <p>Here's what's happening with your inventory today.</p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+
+        <button className="primary-button">
+          + New Operation
         </button>
-      </section>
+      </div>
 
-      <div className="ticks"></div>
+      <div className="stats-grid">
+        {stats.map((stat) => (
+          <div className="stat-card" key={stat.title}>
+            <p>{stat.title}</p>
+            <h3>{stat.value}</h3>
+            <span>{stat.change}</span>
+          </div>
+        ))}
+      </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      <div className="dashboard-grid">
+        <div className="panel">
+          <div className="panel-header">
+            <h3>Recent Stock Movements</h3>
+            <button>View all</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Operation</th>
+                <th>Quantity</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Steel Rods</td>
+                <td>Receipt</td>
+                <td className="positive">+100</td>
+                <td><span className="badge done">Done</span></td>
+              </tr>
+
+              <tr>
+                <td>Office Chairs</td>
+                <td>Delivery</td>
+                <td className="negative">-20</td>
+                <td><span className="badge done">Done</span></td>
+              </tr>
+
+              <tr>
+                <td>Steel Sheets</td>
+                <td>Transfer</td>
+                <td>50</td>
+                <td><span className="badge waiting">Waiting</span></td>
+              </tr>
+
+              <tr>
+                <td>Bolts</td>
+                <td>Adjustment</td>
+                <td className="negative">-5</td>
+                <td><span className="badge done">Done</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+        <div className="panel">
+          <div className="panel-header">
+            <h3>Low Stock Alerts</h3>
+          </div>
+
+          <div className="alert-item">
+            <div>
+              <strong>Steel Rods</strong>
+              <p>Only 8 kg remaining</p>
+            </div>
+            <span className="danger">Critical</span>
+          </div>
+
+          <div className="alert-item">
+            <div>
+              <strong>Bolts</strong>
+              <p>Only 15 units remaining</p>
+            </div>
+            <span className="warning">Low</span>
+          </div>
+
+          <div className="alert-item">
+            <div>
+              <strong>Office Chairs</strong>
+              <p>Only 10 units remaining</p>
+            </div>
+            <span className="warning">Low</span>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
