@@ -1369,3 +1369,100 @@ th {
     grid-template-columns: 1fr;
   }
 }
+/* =========================================================
+   INTERNAL TRANSFER LOCATION TRACKING
+========================================================= */
+
+.transfer-header-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #eef1ff;
+  color: #4054d6;
+}
+
+.location-preview {
+  margin: 24px 0;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e5e8ef;
+  border-radius: 14px;
+}
+
+.location-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.location-preview-header h3 {
+  margin: 0 0 4px;
+  color: #202638;
+  font-size: 16px;
+}
+
+.location-preview-header p {
+  margin: 0;
+  color: #858c9c;
+  font-size: 12px;
+}
+
+.location-preview-header > svg {
+  color: #4054d6;
+}
+
+.location-cards {
+  display: grid;
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.location-card {
+  padding: 15px;
+  border: 1px solid #e6e9ef;
+  border-radius: 10px;
+  background: #fafbfc;
+}
+
+.location-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #747c8d;
+  font-size: 11px;
+}
+
+.location-card strong {
+  color: #202638;
+  font-size: 18px;
+}
+
+.badge.done {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 1100px) {
+  .location-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .location-cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 450px) {
+  .location-cards {
+    grid-template-columns: 1fr;
+  }
+}
