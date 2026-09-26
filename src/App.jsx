@@ -1057,39 +1057,7 @@ function ProductsPage({
               <label>
                 Product Name *
               </label>
-              <div className="form-group">
-  <label>
-    {isReceipt
-      ? "Receive At Location *"
-      : "Deliver From Location *"}
-  </label>
-
-  <select
-    name="location"
-    value={form.location}
-    onChange={handleChange}
-  >
-    <option value="Main Store">
-      Main Store
-    </option>
-
-    <option value="Production Rack">
-      Production Rack
-    </option>
-
-    <option value="Main Warehouse">
-      Main Warehouse
-    </option>
-
-    <option value="Production Warehouse">
-      Production Warehouse
-    </option>
-
-    <option value="Warehouse A">
-      Warehouse A
-    </option>
-  </select>
-</div>
+              
 
               <input
                 type="text"
