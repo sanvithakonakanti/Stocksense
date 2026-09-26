@@ -285,6 +285,7 @@ function App() {
           {activePage === "Dashboard" && (
             <Dashboard
               products={products}
+              operations={operations}
             />
           )}
 
@@ -371,7 +372,35 @@ function App() {
    DASHBOARD
 ========================================================= */
 
-function Dashboard({ products }) {
+function Dashboard({ products ,operations,}) {
+    const [documentFilter, setDocumentFilter] =
+    useState("All");
+
+  const [statusFilter, setStatusFilter] =
+    useState("All");
+
+  const [categoryFilter, setCategoryFilter] =
+    useState("All");
+
+  const [warehouseFilter, setWarehouseFilter] =
+    useState("All");
+
+  const categories = [
+    "All",
+    ...new Set(
+      products.map(
+        (product) => product.category
+      )
+    ),
+  ];
+
+  const warehouses = [
+    "All",
+    "Main Store",
+    "Production Rack",
+    "Main Warehouse",
+    "Production Warehouse",
+  ];
   const totalProducts =
     products.length;
 
@@ -398,6 +427,140 @@ function Dashboard({ products }) {
 
   return (
     <>
+          {/* DASHBOARD FILTERS */}
+
+      <div className="dashboard-filters">
+
+        <div className="dashboard-filter">
+          <label>
+            Document Type
+          </label>
+
+          <select
+            value={documentFilter}
+            onChange={(event) =>
+              setDocumentFilter(
+                event.target.value
+              )
+            }
+          >
+            <option value="All">
+              All Documents
+            </option>
+
+            <option value="receipt">
+              Receipts
+            </option>
+
+            <option value="delivery">
+              Deliveries
+            </option>
+
+            <option value="transfer">
+              Internal Transfers
+            </option>
+
+            <option value="adjustment">
+              Adjustments
+            </option>
+          </select>
+        </div>
+
+
+        <div className="dashboard-filter">
+          <label>
+            Status
+          </label>
+
+          <select
+            value={statusFilter}
+            onChange={(event) =>
+              setStatusFilter(
+                event.target.value
+              )
+            }
+          >
+            <option value="All">
+              All Statuses
+            </option>
+
+            <option value="Draft">
+              Draft
+            </option>
+
+            <option value="Waiting">
+              Waiting
+            </option>
+
+            <option value="Ready">
+              Ready
+            </option>
+
+            <option value="Validated">
+              Done
+            </option>
+
+            <option value="Canceled">
+              Canceled
+            </option>
+          </select>
+        </div>
+
+
+        <div className="dashboard-filter">
+          <label>
+            Category
+          </label>
+
+          <select
+            value={categoryFilter}
+            onChange={(event) =>
+              setCategoryFilter(
+                event.target.value
+              )
+            }
+          >
+            {categories.map(
+              (category) => (
+                <option
+                  key={category}
+                  value={category}
+                >
+                  {category}
+                </option>
+              )
+            )}
+          </select>
+        </div>
+
+
+        <div className="dashboard-filter">
+          <label>
+            Warehouse / Location
+          </label>
+
+          <select
+            value={warehouseFilter}
+            onChange={(event) =>
+              setWarehouseFilter(
+                event.target.value
+              )
+            }
+          >
+            {warehouses.map(
+              (warehouse) => (
+                <option
+                  key={warehouse}
+                  value={warehouse}
+                >
+                  {warehouse}
+                </option>
+              )
+            )}
+          </select>
+        </div>
+
+      </div>
       <div className="welcome">
         <div>
           <h2>
