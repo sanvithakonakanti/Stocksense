@@ -19,6 +19,9 @@ import {
 } from "lucide-react";
 
 import "./App.css";
+import StockLedger from "./components/StockLedger";
+import Adjustments from "./components/Adjustments";
+import Transfers from "./components/Transfers";
 
 const initialProducts = [
   {
@@ -268,11 +271,34 @@ function App() {
               setOperations={setOperations}
             />
           )}
+          {activePage === "Stock Ledger" && (
+  <StockLedger
+    operations={operations}
+  />
+)}
+{activePage === "Adjustments" && (
+  <Adjustments
+    products={products}
+    setProducts={setProducts}
+    operations={operations}
+    setOperations={setOperations}
+  />
+)}
+{activePage === "Transfers" && (
+  <Transfers
+    products={products}
+    operations={operations}
+    setOperations={setOperations}
+  />
+)}
 
           {activePage !== "Dashboard" &&
             activePage !== "Products" &&
             activePage !== "Receipts" &&
-            activePage !== "Deliveries" && (
+            activePage !== "Deliveries" &&
+            activePage !== "Stock Ledger" &&
+             activePage !== "Adjustments" && 
+             activePage !== "Transfers"&& (
 
               <div className="placeholder">
 
