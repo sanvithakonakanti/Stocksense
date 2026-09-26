@@ -794,6 +794,7 @@ function ProductsPage({
     unit: "Units",
     stock: "",
     reorderLevel: "",
+    location: "Main Store",
   });
 
   const categories = [
@@ -1042,6 +1043,39 @@ function ProductsPage({
               <label>
                 Product Name *
               </label>
+              <div className="form-group">
+  <label>
+    {isReceipt
+      ? "Receive At Location *"
+      : "Deliver From Location *"}
+  </label>
+
+  <select
+    name="location"
+    value={form.location}
+    onChange={handleChange}
+  >
+    <option value="Main Store">
+      Main Store
+    </option>
+
+    <option value="Production Rack">
+      Production Rack
+    </option>
+
+    <option value="Main Warehouse">
+      Main Warehouse
+    </option>
+
+    <option value="Production Warehouse">
+      Production Warehouse
+    </option>
+
+    <option value="Warehouse A">
+      Warehouse A
+    </option>
+  </select>
+</div>
 
               <input
                 type="text"
@@ -1476,6 +1510,7 @@ function OperationsPage({
       quantity: "",
       party: "",
       reference: "",
+      location: "Main Store",
     });
 
     setShowForm(false);
@@ -1521,12 +1556,42 @@ function OperationsPage({
       return;
     }
 
-    const updatedStock =
-      isReceipt
-        ? selectedProduct.stock +
-          quantity
-        : selectedProduct.stock -
-          quantity;
+    const oldLocations =
+  selectedProduct.locations || {
+    "Main Store":
+      selectedProduct.stock || 0,
+    "Production Rack": 0,
+  };
+
+const locationStock = Number(
+  oldLocations[form.location] || 0
+);
+
+if (
+  !isReceipt &&
+  quantity > locationStock
+) {
+  alert(
+    `Insufficient stock at ${form.location}. Available: ${locationStock} ${selectedProduct.unit}`
+  );
+  return;
+}
+
+const newLocations = {
+  ...oldLocations,
+};
+
+newLocations[form.location] =
+  isReceipt
+    ? locationStock + quantity
+    : locationStock - quantity;
+
+const updatedStock =
+  isReceipt
+    ? Number(selectedProduct.stock) +
+      quantity
+    : Number(selectedProduct.stock) -
+      quantity;
 
     setProducts(
       products.map((product) =>
@@ -1535,6 +1600,7 @@ function OperationsPage({
           ? {
               ...product,
               stock: updatedStock,
+              locations: newLocations,
             }
           : product
       )
@@ -1559,6 +1625,7 @@ function OperationsPage({
       date:
         new Date().toLocaleString(),
       status: "Validated",
+      location: form.location,
     };
 
     setOperations([
